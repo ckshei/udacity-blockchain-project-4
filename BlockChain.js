@@ -52,7 +52,7 @@ class Blockchain {
                 return self.bd.getLevelDBData(height);
             }).then((previousBlockBD) => {
                 if(previousBlockBD) {
-                    let previousBlock = JSON.parse(previousBlockBD);
+                    let previousBlock = previousBlockBD;
                     block.previousBlockHash = previousBlock.hash;
                     block.time = new Date().getTime().toString().slice(0,-3);
                     block.hash = SHA256(JSON.stringify(block)).toString();
