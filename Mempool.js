@@ -42,6 +42,16 @@ class Mempool {
         }
     }
 
+    searchValidRequestByWalletAddress(address) {
+        let self = this;
+        if(self.mempoolValid[address]) {
+            return self.mempoolValid[address]
+        } else {
+            return undefined;
+        }
+    }
+
+
     removeValidationRequest(address) {
         delete this.mempool[address]
         delete this.timeoutRequests[address]
@@ -63,9 +73,7 @@ class Mempool {
                 let reqObjValidate = new RequestObjValid.RequestObjValid(result, isValid);
                 if (isValid) {
                     let timeElapse = (new Date().getTime().toString().slice(0,-3)) - reqObjValidate.status.requestTimeStamp;
-                    console.log(timeElapse, 'timeElapse')
                     let timeLeft = (TimeoutMempoolValidWindowTime/1000) - timeElapse;
-                    console.log(timeLeft, 'timeleft', TimeoutMempoolValidWindowTime, 'tp')
                     reqObjValidate.status.validationWindow = timeLeft;
                     self.mempoolValid[reqObjValidate.status.address] = reqObjValidate;
                     self.timeoutMempoolValid[reqObjValidate.status.address] = setTimeout(function() {

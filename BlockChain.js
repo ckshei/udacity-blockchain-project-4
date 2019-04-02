@@ -37,7 +37,7 @@ class Blockchain {
         return new Promise((resolve, reject) => {
             self.bd.getBlocksCount().then((height) => {
                 resolve(height);
-            }).catch((err) => {console.log(err); resolve(-1)});
+            }).catch((err) => {resolve(-1)});
         })
     }
 
@@ -56,18 +56,16 @@ class Blockchain {
                     block.time = new Date().getTime().toString().slice(0,-3);
                     block.hash = SHA256(JSON.stringify(block)).toString();
                 } else {
-                    console.log('making the genesis block')
                     block.time = new Date().getTime().toString().slice(0,-3);
                     block.hash = SHA256(JSON.stringify(block)).toString();
                 }
                 return self.bd.addLevelDBData(block.height, JSON.stringify(block).toString());
             }).then((result) => {
                 if(!result) {
-                    console.log("Error adding new block to the chain");
                     reject(new TypeError("Error Adding new block to the chain"));
                 }
                 resolve(result);
-            }).catch((err) => { console.log(err); reject(err)});
+            }).catch((err) => { reject(err)});
         });
     }
 
@@ -78,7 +76,7 @@ class Blockchain {
         return new Promise((resolve,reject) => {
             self.bd.getLevelDBData(height)
                 .then((block) => resolve(block))
-                .catch((err) => {console.log(err); reject(err)})
+                .catch((err) => {reject(err)})
         });
     }
 
@@ -148,8 +146,8 @@ class Blockchain {
                         chainIndex++;
                     });
                     resolve(errorLog);
-                }).catch((err) => {console.log(err); reject(err)});
-            }).catch((err) => { console.log(err); reject(err)});
+                }).catch((err) => {reject(err)});
+            }).catch((err) => {reject(err)});
         })
     }
 
@@ -160,7 +158,7 @@ class Blockchain {
         return new Promise( (resolve, reject) => {
             self.bd.addLevelDBData(height, JSON.stringify(block).toString()).then((blockModified) => {
                 resolve(blockModified);
-            }).catch((err) => { console.log(err); reject(err)});
+            }).catch((err) => {reject(err)});
         });
     }
 }
