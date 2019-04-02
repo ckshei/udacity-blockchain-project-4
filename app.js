@@ -1,5 +1,9 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const BlockController = require("./BlockController.js")
+const MempoolController = require('./MempoolController.js')
+const BlockChain = require('./BlockChain.js');
+const Mempool = require('./Mempool.js');
 
 class ApplicationServer {
 
@@ -7,11 +11,13 @@ class ApplicationServer {
      * Constructor that allows initialize the class 
      */
     constructor() {
-		this.app = express();
+        this.app = express();
+        this.blockchain = new BlockChain.Blockchain();
+        this.mempool = new Mempool.Mempool();
 		this.initExpress();
 		this.initExpressMiddleWare();
 		this.initControllers();
-		this.start();
+        this.start();
 	}
 
     /**
@@ -33,7 +39,8 @@ class ApplicationServer {
      * Initilization of all the controllers
      */
 	initControllers() {
-		require("./BlockController.js")(this.app);
+       BlockController(this.app, this.blockchain, this.mempool);
+       MempoolController(this.app, this.blockchain, this.mempool);
 	}
 
     /**

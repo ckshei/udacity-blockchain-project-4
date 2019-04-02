@@ -1,18 +1,9 @@
-const SHA256 = require('crypto-js/sha256');
-const BlockChain = require('./BlockChain.js');
-
-/**
- * Controller Definition to encapsulate routes to work with blocks
- */
 class BlockController {
 
-    /**
-     * Constructor to create a new BlockController, you need to initialize here all your endpoints
-     * @param {*} app 
-     */
-    constructor(app) {
+    constructor(app, blockchainObj, mempoolObj) {
         this.app = app;
-        this.blockchain = new BlockChain.Blockchain();
+        this.blockchain = blockchainObj;
+        this.mempool = mempoolObj;
         this.getBlockByHeight();
         this.postNewBlock();
         this.helloWorld();
@@ -54,4 +45,4 @@ class BlockController {
 
 }
 
-module.exports = (app) => { return new BlockController(app);}
+module.exports = (app, blockchain, mempool) => { return new BlockController(app, blockchain, mempool);}
