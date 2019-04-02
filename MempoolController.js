@@ -7,6 +7,7 @@ class MempoolController {
         this.blockchain = blockchainObj
         this.mempool = mempoolObj
         this.requestValidation();
+        this.validateSignature();
     }
 
     requestValidation() {
@@ -23,7 +24,27 @@ class MempoolController {
             } else {
                 return res.status(500).send('please include an address');
             }
-        }) 
+        });
+    }
+
+    validateSignature() {
+        this.app.post("/message-signature/validate", (req, res) => {
+            if(req.body.address && req.body.signature) {
+                console.log("line 33")
+                this.mempool.validateRequestByWallet(req.body.address, req.body.signature).then((result) => {
+                    if (result) {
+                        return res.status(200).send(result);
+                    } else {
+                        return res.status(200).send("There was no matching address");
+                    }
+                }).catch((error) => {
+                    return res.status(500).send('error with validate request promise')
+                })
+            } else {
+                console.log(req.body.address, req.body.signature)
+                return res.status(500).send('missing address or signature');
+            }
+        });
     }
 
 }
