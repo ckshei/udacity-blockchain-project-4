@@ -71,7 +71,7 @@ class LevelSandbox {
             self.db.createReadStream()
             .on('data', function (data) {
                 if(JSON.parse(data.value).hash == hash){
-                    block = data;
+                    block = JSON.parse(data.value);
                 }
             })
             .on('error', function (err){
