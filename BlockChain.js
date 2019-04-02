@@ -71,10 +71,19 @@ class Blockchain {
 
     // Get Block By Height
     getBlock(height) {
-        // Add your code here
         let self = this;
         return new Promise((resolve,reject) => {
             self.bd.getLevelDBData(height)
+                .then((block) => resolve(block))
+                .catch((err) => {reject(err)})
+        });
+    }
+    
+    // Get Block By Hash
+    getBlockByHash(hash) {
+        let self = this;
+        return new Promise((resolve,reject) => {
+            self.bd.getBlockByHash(hash)
                 .then((block) => resolve(block))
                 .catch((err) => {reject(err)})
         });

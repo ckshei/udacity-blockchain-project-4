@@ -7,6 +7,7 @@ class BlockController {
         this.blockchain = blockchainObj;
         this.mempool = mempoolObj;
         this.getBlockByHeight();
+        this.getBlockByHash();
         this.postNewBlock();
         this.helloWorld();
     }
@@ -18,7 +19,7 @@ class BlockController {
     }
 
     getBlockByHeight() { 
-        this.app.get("/block/:height", (req, res) => {
+        this.app.get("/block/height/:height", (req, res) => {
             if(req.params.height) {
                 let height = req.params.height;
                 this.blockchain.getBlock(height).then((block) => {
@@ -34,12 +35,27 @@ class BlockController {
         }); 
     }
 
+    getBlockByHash() { 
+        this.app.get("/block/hash/:hash", (req, res) => {
+            if(req.params.hash) {
+                let hash = req.params.hash;
+                this.blockchain.getBlockByHash(hash).then((block) => {
+                    if(block) {
+                        return res.status(200).json(block);
+                    } else {
+                        return res.status(400).json(null);
+                    }
+                }).catch((error) => { return res.status(500).send("Uh Oh...")})
+            } else {
+                return res.status(500).send("The hash is required");
+            }
+        }); 
+    }
+
     postNewBlock() {
         this.app.post("/block", (req, res) => {
             if(req.body.address && req.body.star) {
-                console.log(req.body.address)
                 let result = this.mempool.searchValidRequestByWalletAddress(req.body.address)
-                console.log(result)
                 if(result){
                     let RA = req.body.star.ra;
                     let DEC = req.body.star.dec;
