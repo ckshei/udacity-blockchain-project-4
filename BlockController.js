@@ -43,7 +43,12 @@ class BlockController {
 
     postNewBlock() {
         this.app.post("/block", (req, res) => {
-            // Add your code here
+            let body = req.body
+            if (body.body && body.body.length > 0) {
+                this.blockchain.addBlock(body).then(block => res.send(block), (err) => res.send({status: 'error', message: err}));
+            } else {
+                res.send({status: 'error', message: 'Block String cannot be empty'})
+            }            
         });
     }
 
