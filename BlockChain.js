@@ -33,7 +33,6 @@ class Blockchain {
     getBlockHeight() {
         // Add your code here
         let self = this;
-
         return new Promise((resolve, reject) => {
             self.bd.getBlocksCount().then((height) => {
                 resolve(height);
@@ -42,7 +41,7 @@ class Blockchain {
     }
 
     // Add new block
-    addBlock(block) {
+    async addBlock(block) {
         let self = this;
         // Add your code here
         return new Promise ( (resolve, reject) => {
@@ -53,10 +52,10 @@ class Blockchain {
                 if(previousBlockBD) {
                     let previousBlock = previousBlockBD;
                     block.previousBlockHash = previousBlock.hash;
-                    block.time = new Date().getTime().toString().slice(0,-3);
+                    block.timeStamp = new Date().getTime().toString().slice(0,-3);
                     block.hash = SHA256(JSON.stringify(block)).toString();
                 } else {
-                    block.time = new Date().getTime().toString().slice(0,-3);
+                    block.timeStamp = new Date().getTime().toString().slice(0,-3);
                     block.hash = SHA256(JSON.stringify(block)).toString();
                 }
                 return self.bd.addLevelDBData(block.height, JSON.stringify(block).toString());

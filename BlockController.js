@@ -19,7 +19,7 @@ class BlockController {
     }
 
     getBlockByHeight() { 
-        this.app.get("/block/height/:height", (req, res) => {
+        this.app.get("/block/:height", (req, res) => {
             if(req.params.height) {
                 let height = req.params.height;
                 this.blockchain.getBlock(height).then((block) => {
@@ -36,7 +36,7 @@ class BlockController {
     }
 
     getBlockByHash() { 
-        this.app.get("/block/hash/:hash", (req, res) => {
+        this.app.get("/block/stars/hash/:hash", (req, res) => {
             if(req.params.hash) {
                 let hash = req.params.hash;
                 this.blockchain.getBlockByHash(hash).then((block) => {
@@ -77,7 +77,9 @@ class BlockController {
                         this.blockchain.addBlock((block)).then((result) => {
                             if(result){
                                 this.mempool.removeValidRequest(req.body.address);
+                                this.mempool.removeValidationRequest(req.body.address);
                                 const block = JSON.parse(result)
+                                block.data.star.storyDecoded = Buffer(block.data.star.story, 'hex').toString()
                                 return res.status(200).json(block);
                             } else {
                                 return res.status(500).send("Something went wrong");

@@ -72,9 +72,9 @@ class Mempool {
                 let isValid = bitcoinMessage.verify(result.message, address, signature);
                 let reqObjValidate = new RequestObjValid.RequestObjValid(result, isValid);
                 if (isValid) {
-                    let timeElapse = (new Date().getTime().toString().slice(0,-3)) - reqObjValidate.status.requestTimeStamp;
-                    let timeLeft = (TimeoutMempoolValidWindowTime/1000) - timeElapse;
-                    reqObjValidate.status.validationWindow = timeLeft;
+                    // let timeElapse = (new Date().getTime().toString().slice(0,-3)) - reqObjValidate.status.requestTimeStamp;
+                    // let timeLeft = (TimeoutMempoolValidWindowTime/1000) - timeElapse;
+                    // reqObjValidate.status.validationWindow = timeLeft;
                     self.mempoolValid[reqObjValidate.status.address] = reqObjValidate;
                     self.timeoutMempoolValid[reqObjValidate.status.address] = setTimeout(function() {
                         self.removeValidRequest(reqObjValidate.status.address)
