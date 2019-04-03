@@ -49,6 +49,7 @@ class ApplicationServer {
 	start() {
 		let self = this;
 		this.app.listen(this.app.get("port"), () => {
+            console.log(`running on port ${this.app.get("port")}`)
 		});
 	}
 

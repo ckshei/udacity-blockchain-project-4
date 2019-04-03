@@ -83,6 +83,27 @@ class LevelSandbox {
         });
     }
 
+
+    getBlocksByAddress(address) {
+        let self = this;
+        return new Promise(function(resolve, reject){
+            let blocks = [];
+            self.db.createReadStream()
+            .on('data', function (data) {
+                if(JSON.parse(data.value).data && JSON.parse(data.value).data.address == address){
+                    blocks.push(JSON.parse(data.value));
+                }
+            })
+            .on('error', function (err){
+                reject(err)
+            })
+            .on('close', function () {
+                console.log(blocks)
+                resolve(blocks);
+            });
+        });
+    }
+
 }
 
 module.exports.LevelSandbox = LevelSandbox;

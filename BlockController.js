@@ -10,6 +10,7 @@ class BlockController {
         this.getBlockByHash();
         this.postNewBlock();
         this.helloWorld();
+        this.getBlocksByAddress();
     }
 
     helloWorld() {
@@ -36,7 +37,7 @@ class BlockController {
     }
 
     getBlockByHash() { 
-        this.app.get("/block/stars/hash/:hash", (req, res) => {
+        this.app.get("/stars/hash::hash", (req, res) => {
             if(req.params.hash) {
                 let hash = req.params.hash;
                 this.blockchain.getBlockByHash(hash).then((block) => {
@@ -48,6 +49,23 @@ class BlockController {
                 }).catch((error) => { return res.status(500).send("Uh Oh...")})
             } else {
                 return res.status(500).send("The hash is required");
+            }
+        }); 
+    }
+
+    getBlocksByAddress() { 
+        this.app.get("/stars/address::address", (req, res) => {
+            if(req.params.address) {
+                let address = req.params.address;
+                this.blockchain.getBlocksByAddress(address).then((blocks) => {
+                    if(blocks) {
+                        return res.status(200).json(blocks);
+                    } else {
+                        return res.status(400).json(null);
+                    }
+                }).catch((error) => { return res.status(500).send("Uh Oh...")})
+            } else {
+                return res.status(500).send("The address is required");
             }
         }); 
     }

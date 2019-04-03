@@ -87,6 +87,15 @@ class Blockchain {
         });
     }
 
+    getBlocksByAddress(address) {
+        let self = this;
+        return new Promise((resolve,reject) => {
+            self.bd.getBlocksByAddress(address)
+                .then((blocks) => resolve(blocks))
+                .catch((err) => {reject(err)})
+        });
+    }
+
     getBlockChain() {
         let self = this;
         return new Promise((resolve, reject) => {
