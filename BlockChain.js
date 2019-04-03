@@ -23,10 +23,9 @@ class Blockchain {
             if(height === -1) {
                 let genesisBlock = new Block.Block('Genesis Block');
                 this.addBlock(genesisBlock).then((block) => {
-                    console.log(block);
                 });
             }
-        }).catch((err) => {console.log(err)});
+        })
     }
 
     // Get block height, it is a helper method that return the height of the blockchain
